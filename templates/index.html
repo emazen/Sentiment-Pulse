@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Player Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>NBA Player Sentiment Analysis</h1>
+    <form id="player-form">
+        <input type="text" id="player-name" name="player_name" placeholder="Enter player name" required>
+        <button type="submit">Analyze</button>
+    </form>
+    <div id="results"></div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
