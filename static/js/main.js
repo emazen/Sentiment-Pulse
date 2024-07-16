@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const playerName = document.getElementById('player-name').value;
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
 
         fetch('/analyze', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `player_name=${encodeURIComponent(playerName)}`
+            body: `player_name=${encodeURIComponent(playerName)}&start_date=${encodeURIComponent(startDate)}&end_date=${encodeURIComponent(endDate)}`
         })
         .then(response => response.json())
         .then(data => {

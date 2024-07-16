@@ -3,6 +3,9 @@ from wordcloud import WordCloud
 import os
 
 def create_sentiment_chart(sentiment_data):
+    if not sentiment_data:
+        return '/static/images/no_data.png'  # Create this image to show when there's no data
+    
     dates, sentiments = zip(*sentiment_data)
     plt.figure(figsize=(10, 6))
     plt.plot(dates, sentiments)
@@ -15,6 +18,7 @@ def create_sentiment_chart(sentiment_data):
     plt.close()
     
     return '/' + chart_path
+
 
 def create_word_cloud(reddit_data):
     text = ' '.join([post['title'] + ' ' + post['text'] for post in reddit_data])
