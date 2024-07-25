@@ -25,11 +25,10 @@ def analyze():
 
         reddit_data = get_reddit_data(player_name)
         sentiment_data = analyze_sentiment(reddit_data)
-        
-        # Filter sentiment_data based on date range
+    
         if start_date and end_date:
-            sentiment_data = [(date, sentiment) for date, sentiment in sentiment_data 
-                              if start_date <= date <= end_date]
+            sentiment_data = [(date, sentiment, title, url) for date, sentiment, title, url in sentiment_data 
+                            if start_date <= date <= end_date]
 
         chart_path = create_sentiment_chart(sentiment_data)
         word_cloud_path = create_word_cloud(reddit_data)
@@ -42,4 +41,4 @@ def analyze():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)  # or any other available port

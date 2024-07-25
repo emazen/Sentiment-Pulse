@@ -20,13 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.error) {
                 resultsDiv.innerHTML = `<p>Error: ${data.error}</p>`;
             } else {
-                const timestamp = new Date().getTime();
                 resultsDiv.innerHTML = `
                     <h2>Results for ${playerName}</h2>
                     <h3>Sentiment Trend</h3>
-                    <img src="${data.chart_path}?t=${timestamp}" alt="Sentiment Trend">
+                    <iframe src="${data.chart_path}" width="100%" height="500px"></iframe>
                     <h3>Word Cloud</h3>
-                    <img src="${data.word_cloud_path}?t=${timestamp}" alt="Word Cloud">
+                    <img src="${data.word_cloud_path}" alt="Word Cloud">
                 `;
             }
         })

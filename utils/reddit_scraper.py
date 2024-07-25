@@ -15,7 +15,8 @@ def get_reddit_data(player_name):
         posts.append({
             'title': submission.title,
             'text': submission.selftext,
-            'created_utc': submission.created_utc
+            'created_utc': submission.created_utc,
+            'url' : submission.url
         })
 
     return posts
