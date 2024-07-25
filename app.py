@@ -13,22 +13,21 @@ def index():
 @app.route('/analyze', methods=['POST'])
 def analyze():
     player_name = request.form.get('player_name')
-    start_date = request.form.get('start_date')
-    end_date = request.form.get('end_date')
+    season = request.form.get('season')
 
-    if not player_name:
-        return jsonify({'error': 'Player name is required'}), 400
+    if not player_name or not season:
+        return jsonify({'error': 'Player name and season are required'}), 400
 
     try:
-        start_date = datetime.strptime(start_date, '%Y-%m-%d') if start_date else None
-        end_date = datetime.strptime(end_date, '%Y-%m-%d') if end_date else None
+        start_year, end_year = map(int, season.split('/'))
+        start_date = datetime(start_year, 10, 1)
+        end_date = datetime(end_year, 6, 30)
 
         reddit_data = get_reddit_data(player_name)
         sentiment_data = analyze_sentiment(reddit_data)
     
-        if start_date and end_date:
-            sentiment_data = [(date, sentiment, title, url) for date, sentiment, title, url in sentiment_data 
-                            if start_date <= date <= end_date]
+        sentiment_data = [(date, sentiment, title, url) for date, sentiment, title, url in sentiment_data 
+                          if start_date <= date <= end_date]
 
         chart_path = create_sentiment_chart(sentiment_data)
         word_cloud_path = create_word_cloud(reddit_data)
@@ -41,4 +40,4 @@ def analyze():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)  # or any other available port
+    app.run(debug=True, port=5001)

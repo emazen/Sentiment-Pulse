@@ -11,7 +11,8 @@ def get_reddit_data(player_name):
     subreddit = reddit.subreddit('nba')
     posts = []
 
-    for submission in subreddit.search(player_name, limit=250):
+    # Increase the limit to fetch more posts
+    for submission in subreddit.search(player_name, limit=1000):
         posts.append({
             'title': submission.title,
             'text': submission.selftext,

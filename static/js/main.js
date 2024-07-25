@@ -5,15 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const playerName = document.getElementById('player-name').value;
-        const startDate = document.getElementById('start-date').value;
-        const endDate = document.getElementById('end-date').value;
+        const season = document.getElementById('season-selector').value;
 
         fetch('/analyze', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `player_name=${encodeURIComponent(playerName)}&start_date=${encodeURIComponent(startDate)}&end_date=${encodeURIComponent(endDate)}`
+            body: `player_name=${encodeURIComponent(playerName)}&season=${encodeURIComponent(season)}`
         })
         .then(response => response.json())
         .then(data => {
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultsDiv.innerHTML = `<p>Error: ${data.error}</p>`;
             } else {
                 resultsDiv.innerHTML = `
-                    <h2>Results for ${playerName}</h2>
+                    <h2>Results for ${playerName} (${season} season)</h2>
                     <h3>Sentiment Trend</h3>
                     <iframe src="${data.chart_path}" width="100%" height="500px"></iframe>
                     <h3>Word Cloud</h3>
