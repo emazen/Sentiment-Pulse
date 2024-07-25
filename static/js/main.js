@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h2>Results for ${playerName} (${season} season)</h2>
                     <h3>Sentiment Trend</h3>
                     <iframe src="${data.chart_path}" width="100%" height="500px"></iframe>
+                    <h3>Points per Game</h3>
+                    <iframe src="${data.points_chart_path}" width="100%" height="500px"></iframe>
                     <h3>Word Cloud</h3>
                     <img src="${data.word_cloud_path}" alt="Word Cloud">
                 `;

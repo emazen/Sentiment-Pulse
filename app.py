@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 from utils.reddit_scraper import get_reddit_data
 from utils.sentiment_analyzer import analyze_sentiment
-from utils.data_visualizer import create_sentiment_chart, create_word_cloud
+from utils.data_visualizer import create_sentiment_chart, create_word_cloud, create_points_chart
+from utils.nba_stats import get_player_game_log
 from datetime import datetime
 
 app = Flask(__name__)
@@ -32,9 +33,14 @@ def analyze():
         chart_path = create_sentiment_chart(sentiment_data)
         word_cloud_path = create_word_cloud(reddit_data)
 
+        # Get player game log and create points chart
+        points_data = get_player_game_log(player_name, f"{start_year}-{str(end_year)[2:]}")
+        points_chart_path = create_points_chart(points_data)
+
         return jsonify({
             'chart_path': chart_path,
-            'word_cloud_path': word_cloud_path
+            'word_cloud_path': word_cloud_path,
+            'points_chart_path': points_chart_path
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500

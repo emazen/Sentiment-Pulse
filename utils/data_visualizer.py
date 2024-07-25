@@ -1,17 +1,8 @@
+from flask import json
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import mpld3
 from mpld3 import plugins
-
-import matplotlib.pyplot as plt
-import mpld3
-from mpld3 import plugins
-import json
-
-import matplotlib.pyplot as plt
-import mpld3
-from mpld3 import plugins
-import json
 
 def create_sentiment_chart(sentiment_data):
     if not sentiment_data:
@@ -88,6 +79,33 @@ def create_sentiment_chart(sentiment_data):
     </script>
     </body>
     ''' % json.dumps(urls))
+    
+    with open(chart_path, 'w') as f:
+        f.write(html)
+    
+    plt.close()
+    
+    return '/' + chart_path
+
+def create_points_chart(points_data):
+    if not points_data:
+        return '/static/images/no_data.png'
+    
+    dates, points = zip(*points_data)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    ax.plot(dates, points, '-o')
+    
+    ax.set_title('Points per Game')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Points')
+    
+    # Rotate and align the tick labels so they look better
+    plt.gcf().autofmt_xdate()
+    
+    # Save the plot as HTML
+    chart_path = 'static/images/points_chart.html'
+    html = mpld3.fig_to_html(fig)
     
     with open(chart_path, 'w') as f:
         f.write(html)
