@@ -31,7 +31,7 @@ def analyze():
                           if start_date <= date <= end_date]
 
         chart_path = create_sentiment_chart(sentiment_data)
-        word_cloud_path = create_word_cloud(reddit_data)
+        word_cloud_path = create_word_cloud(reddit_data, player_name)
 
         # Get player game log and create points chart
         points_data = get_player_game_log(player_name, f"{start_year}-{str(end_year)[2:]}")
@@ -46,4 +46,4 @@ def analyze():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5003)
+    app.run(debug=True, port=5004)
