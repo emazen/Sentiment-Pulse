@@ -9,10 +9,12 @@ def create_sentiment_chart(sentiment_data):
         return '/static/images/no_data.png'
     
     dates, sentiments, titles, urls = zip(*sentiment_data)
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(12, 6))
     
     # Create line plot
     ax.plot(dates, sentiments, '-', alpha=0.5)
+
+    plt.tight_layout()
     
     # Create scatter plot
     scatter = ax.scatter(dates, sentiments, c=sentiments, cmap='coolwarm', vmin=-1, vmax=1, s=50)
@@ -40,46 +42,6 @@ def create_sentiment_chart(sentiment_data):
     chart_path = 'static/images/sentiment_chart.html'
     html = mpld3.fig_to_html(fig)
     
-    # Add custom JavaScript to make tooltips persist on click and open link on double-click
-    html = html.replace('</body>', '''
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var svg = document.querySelector("#figure svg");
-            var tooltip = document.querySelector(".mpld3-tooltip");
-            var isTooltipVisible = false;
-            var lastClickTime = 0;
-            var urls = %s;
-            
-            svg.addEventListener('click', function(e) {
-                var now = new Date().getTime();
-                if (e.target.tagName === 'circle') {
-                    var index = Array.from(e.target.parentNode.children).indexOf(e.target);
-                    if (now - lastClickTime < 300) {
-                        // Double click
-                        window.open(urls[index], '_blank');
-                    } else {
-                        // Single click
-                        if (isTooltipVisible) {
-                            tooltip.style.visibility = 'hidden';
-                            isTooltipVisible = false;
-                        } else {
-                            setTimeout(function() {
-                                tooltip.style.visibility = 'visible';
-                                isTooltipVisible = true;
-                            }, 100);
-                        }
-                    }
-                    lastClickTime = now;
-                } else if (!tooltip.contains(e.target)) {
-                    tooltip.style.visibility = 'hidden';
-                    isTooltipVisible = false;
-                }
-            });
-        });
-    </script>
-    </body>
-    ''' % json.dumps(urls))
-    
     with open(chart_path, 'w') as f:
         f.write(html)
     
@@ -92,9 +54,11 @@ def create_points_chart(points_data):
         return '/static/images/no_data.png'
     
     dates, points = zip(*points_data)
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(12, 6))
     
     ax.plot(dates, points, '-o')
+
+    plt.tight_layout()
     
     ax.set_title('Points per Game')
     ax.set_xlabel('Date')

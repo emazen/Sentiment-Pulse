@@ -20,14 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultsDiv.innerHTML = `<p>Error: ${data.error}</p>`;
             } else {
                 resultsDiv.innerHTML = `
-                    <h2>Results for ${playerName} (${season} season)</h2>
-                    <h3>Sentiment Trend</h3>
-                    <iframe src="${data.chart_path}" width="100%" height="500px"></iframe>
-                    <h3>Points per Game</h3>
-                    <iframe src="${data.points_chart_path}" width="100%" height="500px"></iframe>
-                    <h3>Word Cloud</h3>
-                    <img src="${data.word_cloud_path}" alt="Word Cloud">
-                `;
+                <h2>Results for ${playerName} (${season} season)</h2>
+                <h3>Sentiment Trend</h3>
+                <div class="chart-container">
+                    <iframe src="${data.chart_path}" width="100%" height="400px" scrolling="no"></iframe>
+                </div>
+                <h3>Points per Game</h3>
+                <div class="chart-container">
+                    <iframe src="${data.points_chart_path}" width="100%" height="400px" scrolling="no"></iframe>
+                </div>
+                <h3>Word Cloud</h3>
+                <img src="${data.word_cloud_path}" alt="Word Cloud">
+            `;
             }
         })
         .catch(error => {
