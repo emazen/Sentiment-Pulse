@@ -118,3 +118,29 @@ iframe, img {
     width: 100%;
     height: 100%;
 }
+.player-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.player-image {
+  width: 260px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.player-stats {
+  flex-grow: 1;
+}
+
+.player-stats p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
