@@ -38,12 +38,47 @@ main.container {
   padding-top: 2rem;
 }
 
-form {
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.input-section, .player-info-section {
+  width: 48%;
   background-color: white;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+}
+
+.player-info-section {
+  display: none;
+}
+
+.player-info {
+  display: flex;
+  align-items: flex-start;
+}
+
+.player-image {
+  width: 50%;
+  max-width: 260px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.player-stats {
+  width: 50%;
+}
+
+#player-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .form-group {
@@ -72,10 +107,16 @@ button {
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+  margin-top: 1rem;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+.player-stats p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
 }
 
 #results {
@@ -97,6 +138,21 @@ button:hover {
   margin-bottom: 1rem;
 }
 
+.chart-container {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+}
+
+.chart-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 iframe, img {
   max-width: 100%;
   height: auto;
@@ -104,43 +160,22 @@ iframe, img {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.chart-container {
-    position: relative;
-    height: 0;
-    overflow: hidden;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-}
 
-.chart-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .input-section, .player-info-section {
     width: 100%;
-    height: 100%;
-}
-.player-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+    margin-bottom: 1rem;
+  }
 
-.player-image {
-  width: 260px;
-  height: 190px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 1rem;
-}
+  .player-info {
+    flex-direction: column;
+  }
 
-.player-stats {
-  flex-grow: 1;
-}
-
-.player-stats p {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
+  .player-image, .player-stats {
+    width: 100%;
+  }
 }
