@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 resultsDiv.innerHTML = `
                     <h2>Results for ${playerName} (${season} season)</h2>
+                    <div class="player-info">
+                        <img src="${data.player_info.image_url}" alt="${data.player_info.name}" class="player-image">
+                        <div class="player-stats">
+                            <p>Points per game: ${data.player_info.ppg.toFixed(1)}</p>
+                            <p>Rebounds per game: ${data.player_info.rpg.toFixed(1)}</p>
+                            <p>Assists per game: ${data.player_info.apg.toFixed(1)}</p>
+                        </div>
+                    </div>
                     <h3>Sentiment Trend</h3>
                     <div class="chart-container">
                         <iframe src="${data.chart_path}" width="100%" height="400px" scrolling="no"></iframe>
