@@ -1,36 +1,47 @@
-import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer
-import datetime
-import ssl
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from datetime import datetime
+from functools import lru_cache
 
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
+# Load pre-trained model and tokenizer
+MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
-def download_vader_lexicon():
-    try:
-        nltk.data.find('sentiment/vader_lexicon.zip')
-    except LookupError:
-        print("Downloading VADER lexicon...")
-        nltk.download('vader_lexicon', quiet=True)
+# Move model to GPU if available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = model.to(device)
 
-download_vader_lexicon()
+@lru_cache(maxsize=1000)
+def get_sentiment(text):
+    inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
+    inputs = {k: v.to(device) for k, v in inputs.items()}
+    with torch.no_grad():
+        outputs = model(**inputs)
+    scores = torch.softmax(outputs.logits, dim=1).cpu().numpy()[0]
+    return scores[2] - scores[0]  # Positive score - Negative score
 
 def analyze_sentiment(reddit_data):
-    sid = SentimentIntensityAnalyzer()
     sentiment_data = []
 
-    for post in reddit_data:
-        text = post['title'] + ' ' + post['text']
-        sentiment_scores = sid.polarity_scores(text)
-        
-        # Use the compound score as the sentiment value
-        sentiment_value = sentiment_scores['compound']
-        
-        date = datetime.datetime.fromtimestamp(post['created_utc'])
-        sentiment_data.append((date, sentiment_value, post['title'], post['url']))
+    texts = [post['title'] for post in reddit_data]  # Analyze only titles for speed
+    sentiments = process_in_batches(texts)
+
+    for post, sentiment in zip(reddit_data, sentiments):
+        date = datetime.fromtimestamp(post['created_utc'])
+        sentiment_data.append((date, sentiment, post['title'], post['url']))
 
     return sorted(sentiment_data)
+
+def process_in_batches(texts, batch_size=32):
+    sentiments = []
+    for i in range(0, len(texts), batch_size):
+        batch = texts[i:i+batch_size]
+        inputs = tokenizer(batch, return_tensors="pt", padding=True, truncation=True, max_length=512)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        with torch.no_grad():
+            outputs = model(**inputs)
+        scores = torch.softmax(outputs.logits, dim=1)
+        batch_sentiments = scores[:, 2] - scores[:, 0]  # Positive scores - Negative scores
+        sentiments.extend(batch_sentiments.cpu().tolist())
+    return sentiments
