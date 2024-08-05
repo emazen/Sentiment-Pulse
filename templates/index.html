@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Player Sentiment Analysis</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header>
@@ -15,36 +15,38 @@
 
     <main class="container">
         <div class="content-wrapper">
-            <div class="input-section">
+            <section class="input-section">
                 <form id="player-form">
-                    <div>
-                        <div class="form-group">
-                            <label for="player-name">Player Name:</label>
-                            <input type="text" id="player-name" name="player_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="season-selector">Season:</label>
-                            <select id="season-selector" name="season" required>
-                                <option value="2023/2024">2023/2024</option>
-                                <option value="2022/2023">2022/2023</option>
-                                <option value="2021/2022">2021/2022</option>
-                                <option value="2020/2021">2020/2021</option>
-                                <option value="2019/2020">2019/2020</option>
-                                <option value="2018/2019">2018/2019</option>
-                                <option value="2017/2018">2017/2018</option>
-                                <option value="2016/2017">2016/2017</option>
-                                <option value="2015/2016">2015/2016</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="player-name">Player Name:</label>
+                        <input type="text" id="player-name" name="player_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="season-selector">Season:</label>
+                        <select id="season-selector" name="season" required>
+                            <option value="2023/2024">2023/2024</option>
+                            <option value="2022/2023">2022/2023</option>
+                            <option value="2021/2022">2021/2022</option>
+                            <option value="2020/2021">2020/2021</option>
+                            <option value="2019/2020">2019/2020</option>
+                            <option value="2018/2019">2018/2019</option>
+                            <option value="2017/2018">2017/2018</option>
+                            <option value="2016/2017">2016/2017</option>
+                            <option value="2015/2016">2015/2016</option>
+                        </select>
                     </div>
                     <button type="submit">Analyze</button>
                 </form>
-            </div>
-            <div class="player-info-section"></div>
+            </section>
+            <section class="player-info-section">
+                <!-- Content will be dynamically inserted here by JavaScript -->
+            </section>
         </div>
-        <div id="results"></div>
+        <div id="results">
+            <!-- Results will be dynamically inserted here by JavaScript -->
+        </div>
     </main>
 
-    <script src="/static/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

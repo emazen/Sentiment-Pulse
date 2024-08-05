@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 playerInfoSection.style.display = 'none';
             } else {
                 playerInfoSection.innerHTML = `
+                <h2>${data.player_info.name} stats for ${season} season</h2>
                 <div class="player-info">
                     <img src="${data.player_info.image_url}" alt="${data.player_info.name}" class="player-image">
                     <div class="player-stats">
