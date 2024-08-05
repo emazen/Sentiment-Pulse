@@ -1,4 +1,5 @@
-from datetime import time
+from datetime import time, datetime
+import matplotlib.dates as mdates
 import time
 from flask import json
 import matplotlib.pyplot as plt
@@ -51,38 +52,29 @@ def create_sentiment_chart(sentiment_data):
     
     return '/' + chart_path
 
-def create_points_chart(points_data):
-    if not points_data:
-        return '/static/images/no_data.png'
-    
-    dates, points = zip(*points_data)
-    fig, ax = plt.subplots(figsize=(12, 6))
-    
-    ax.plot(dates, points, '-o')
+def create_points_chart(game_data):
+    dates = [datetime.fromisoformat(date) for date, _ in game_data]
+    points = [points for _, points in game_data]
 
+    plt.figure(figsize=(12, 6))
+    plt.plot(dates, points, marker='o')
+    
+    plt.title('Points per Game')
+    plt.ylabel('Points')
+    
+    # Format x-axis to show dates
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+    plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
+    
+    plt.gcf().autofmt_xdate()  
     plt.tight_layout()
     
-    ax.set_title('Points per Game')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Points')
-    
-    # Rotate and align the tick labels so they look better
-    plt.gcf().autofmt_xdate()
-    
-    # Save the plot as HTML
-    chart_path = 'static/images/points_chart.html'
-    html = mpld3.fig_to_html(fig)
-    
-    with open(chart_path, 'w') as f:
-        f.write(html)
-    
+    chart_path = 'static/points_chart.png'
+    plt.savefig(chart_path)
     plt.close()
     
-    return '/' + chart_path
+    return chart_path
 
-
-from wordcloud import WordCloud, STOPWORDS
-import matplotlib.pyplot as plt
 
 def create_word_cloud(reddit_data, player_name):
     # Combine all text from reddit data
