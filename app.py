@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from utils.reddit_scraper import get_reddit_data
 from utils.sentiment_analyzer import analyze_sentiment
-from utils.data_visualizer import create_sentiment_chart, create_word_cloud, create_points_chart
+from utils.data_visualizer import create_sentiment_chart, create_points_chart
 from utils.nba_stats import get_player_info
 from datetime import datetime
 
@@ -34,14 +34,12 @@ def analyze():
                           if start_date <= date <= end_date]
 
         chart_path = create_sentiment_chart(sentiment_data, overall_sentiment, sentiment_label)
-        word_cloud_path = create_word_cloud(reddit_data, player_name)
 
         # Create points chart using the game_data from player_info
         points_chart_path = create_points_chart(player_info['game_data'])
 
         return jsonify({
             'chart_path': chart_path,
-            'word_cloud_path': word_cloud_path,
             'points_chart_path': points_chart_path,
             'player_info': player_info,
             'overall_sentiment': round(overall_sentiment, 2),

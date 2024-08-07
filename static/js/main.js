@@ -45,17 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="chart-container">
                         <iframe src="${data.points_chart_path}" width="100%" height="400px" scrolling="no"></iframe>
                     </div>
-                    <h3>Word Cloud</h3>
-                    <img src="${data.word_cloud_path}" alt="Word Cloud">
                 `;
-                
-                // Force refresh of the word cloud image
-                const wordCloudImg = resultsDiv.querySelector('img[alt="Word Cloud"]');
-                wordCloudImg.onload = () => {
-                    wordCloudImg.style.opacity = '1';
-                };
-                wordCloudImg.style.opacity = '0';
-                wordCloudImg.src = data.word_cloud_path + '?t=' + new Date().getTime();
             }
         })
         .catch(error => {
