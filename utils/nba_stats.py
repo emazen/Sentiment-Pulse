@@ -4,6 +4,8 @@ from datetime import datetime
 import numpy as np
 
 def get_player_info(player_name, season):
+
+    
     # Find the player
     player_dict = players.find_players_by_full_name(player_name)
     if not player_dict:

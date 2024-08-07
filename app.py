@@ -28,12 +28,12 @@ def analyze():
         player_info = get_player_info(player_name, f"{start_year}-{str(end_year)[2:]}")
 
         reddit_data = get_reddit_data(player_name)
-        sentiment_data = analyze_sentiment(reddit_data)
+        sentiment_data, overall_sentiment, sentiment_label = analyze_sentiment(reddit_data)
     
         sentiment_data = [(date, sentiment, title, url) for date, sentiment, title, url in sentiment_data 
                           if start_date <= date <= end_date]
 
-        chart_path = create_sentiment_chart(sentiment_data)
+        chart_path = create_sentiment_chart(sentiment_data, overall_sentiment, sentiment_label)
         word_cloud_path = create_word_cloud(reddit_data, player_name)
 
         # Create points chart using the game_data from player_info
@@ -43,7 +43,9 @@ def analyze():
             'chart_path': chart_path,
             'word_cloud_path': word_cloud_path,
             'points_chart_path': points_chart_path,
-            'player_info': player_info
+            'player_info': player_info,
+            'overall_sentiment': round(overall_sentiment, 2),
+            'sentiment_label': sentiment_label
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500

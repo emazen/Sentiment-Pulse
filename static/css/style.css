@@ -126,6 +126,7 @@ button:hover {
 }
 
 #results {
+  position: relative;
   background-color: white;
   padding: 2rem;
   border-radius: 8px;
@@ -184,4 +185,16 @@ iframe, img {
   .player-image, .player-stats {
     width: 100%;
   }
+  .overall-sentiment {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 5px;
+}
+.sentiment-score {
+  margin-right: 0.5em; 
+}
 }

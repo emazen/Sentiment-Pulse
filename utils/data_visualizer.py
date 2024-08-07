@@ -7,7 +7,7 @@ from wordcloud import WordCloud, STOPWORDS
 import mpld3
 from mpld3 import plugins
 
-def create_sentiment_chart(sentiment_data):
+def create_sentiment_chart(sentiment_data, overall_sentiment, sentiment_label):
     if not sentiment_data:
         return '/static/images/no_data.png'
     
@@ -17,14 +17,17 @@ def create_sentiment_chart(sentiment_data):
     # Create line plot
     ax.plot(dates, sentiments, '-', alpha=0.5)
 
-    plt.tight_layout()
-    
     # Create scatter plot
     scatter = ax.scatter(dates, sentiments, c=sentiments, cmap='coolwarm', vmin=-1, vmax=1, s=50)
     
     ax.set_title('Sentiment Trend')
     ax.set_xlabel('Date')
     ax.set_ylabel('Sentiment')
+    
+    # Add overall sentiment to the top right
+    ax.text(0.98, 0.98, f"Overall Sentiment: {overall_sentiment:.2f}\n{sentiment_label}", 
+            transform=ax.transAxes, ha='right', va='top', 
+            bbox=dict(facecolor='white', edgecolor='black', alpha=0.7))
     
     # Create tooltip HTML with only the title
     tooltip_html = [f"<div>{title}</div>" for title in titles]
