@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 import mpld3
 from mpld3 import plugins
+import numpy as np
 
 def create_sentiment_chart(sentiment_data, overall_sentiment, sentiment_label):
     if not sentiment_data:
@@ -14,20 +15,25 @@ def create_sentiment_chart(sentiment_data, overall_sentiment, sentiment_label):
     dates, sentiments, titles, urls = zip(*sentiment_data)
     fig, ax = plt.subplots(figsize=(12, 6))
     
+    # Convert dates to numbers for linear regression
+    dates_num = mdates.date2num(dates)
+    
     # Create line plot
     ax.plot(dates, sentiments, '-', alpha=0.5)
 
     # Create scatter plot
     scatter = ax.scatter(dates, sentiments, c=sentiments, cmap='coolwarm', vmin=-1, vmax=1, s=50)
     
+    # Calculate and plot trend line
+    z = np.polyfit(dates_num, sentiments, 1)
+    p = np.poly1d(z)
+    ax.plot(dates, p(dates_num), "r--", alpha=0.8, label='Trend')
+    
     ax.set_title('Sentiment Trend')
     ax.set_xlabel('Date')
     ax.set_ylabel('Sentiment')
     
-    # Add overall sentiment to the top right
-    ax.text(0.98, 0.98, f"Overall Sentiment: {overall_sentiment:.2f}\n{sentiment_label}", 
-            transform=ax.transAxes, ha='right', va='top', 
-            bbox=dict(facecolor='white', edgecolor='black', alpha=0.7))
+    plt.tight_layout()
     
     # Create tooltip HTML with only the title
     tooltip_html = [f"<div>{title}</div>" for title in titles]
