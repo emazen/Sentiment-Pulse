@@ -23,6 +23,7 @@ def get_sentiment(text):
 
 def analyze_sentiment(reddit_data):
     sentiment_data = []
+    total_sentiment = 0
 
     texts = [post['title'] for post in reddit_data]  # Analyze only titles for speed
     sentiments = process_in_batches(texts)
@@ -30,8 +31,12 @@ def analyze_sentiment(reddit_data):
     for post, sentiment in zip(reddit_data, sentiments):
         date = datetime.fromtimestamp(post['created_utc'])
         sentiment_data.append((date, sentiment, post['title'], post['url']))
+        total_sentiment += sentiment
 
-    return sorted(sentiment_data)
+    overall_sentiment = total_sentiment / len(sentiments) if sentiments else 0
+    sentiment_label = "Positive" if overall_sentiment > 0 else "Negative"
+
+    return sorted(sentiment_data), overall_sentiment, sentiment_label
 
 def process_in_batches(texts, batch_size=32):
     sentiments = []

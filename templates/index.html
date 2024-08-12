@@ -10,6 +10,12 @@
     <header>
         <div class="container">
             <h1>NBA Player Sentiment Analysis</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/leaderboard">Leaderboard</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
@@ -38,13 +44,9 @@
                     <button type="submit">Analyze</button>
                 </form>
             </section>
-            <section class="player-info-section">
-                <!-- Content will be dynamically inserted here by JavaScript -->
-            </section>
+            <section class="player-info-section"></section>
         </div>
-        <div id="results">
-            <!-- Results will be dynamically inserted here by JavaScript -->
-        </div>
+        <div id="results"></div>
     </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

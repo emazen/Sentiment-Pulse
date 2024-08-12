@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Player Sentiment Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>NBA Player Sentiment Analysis</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/leaderboard">Leaderboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Sentiment Leaderboard (2023/2024 Season)</h2>
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% elif leaderboard_data %}
+            <div class="leaderboard-container">
+                <div class="leaderboard-row header">
+                    <div class="cell">Rank</div>
+                    <div class="cell"></div> <!-- Empty cell for image -->
+                    <div class="cell">Player</div>
+                    <div class="cell">Sentiment Score</div>
+                    <div class="cell">PPG</div>
+                    <div class="cell">RPG</div>
+                    <div class="cell">APG</div>
+                </div>
+                {% for player in leaderboard_data %}
+                <div class="leaderboard-row">
+                    <div class="cell">{{ loop.index }}</div>
+                    <div class="cell">
+                        <img src="{{ player.image_url }}" alt="{{ player.name }}" class="player-image {{ 'positive-sentiment' if player.sentiment_score > 0 else 'negative-sentiment' }}">
+                    </div>
+                    <div class="cell">{{ player.name }}</div>
+                    <div class="cell">{{ player.sentiment_score | round(2) }}</div>
+                    <div class="cell">{{ player.ppg }}</div>
+                    <div class="cell">{{ player.rpg }}</div>
+                    <div class="cell">{{ player.apg }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="message">No data available. Please try again later.</p>
+        {% endif %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

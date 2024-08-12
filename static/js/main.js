@@ -34,27 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
                 playerInfoSection.style.display = 'block';
 
-                resultsDiv.innerHTML = `
-                    <h2>Results for ${playerName} (${season} season)</h2>
-                    <h3>Sentiment Trend</h3>
-                    <div class="chart-container">
-                        <iframe src="${data.chart_path}" width="100%" height="400px" scrolling="no"></iframe>
-                    </div>
+        resultsDiv.innerHTML = `
+            <h2>Results for ${playerName} (${season} season)</h2>
+            <p class="overall-sentiment">Overall Sentiment: ${data.overall_sentiment} &nbsp;(${data.sentiment_label})</p>
+            <h3>Sentiment Trend</h3>
+            <div class="chart-container">
+                <iframe src="${data.chart_path}" width="100%" height="400px" scrolling="no"></iframe>
+            </div>
                     <h3>Points per Game</h3>
                     <div class="chart-container">
                         <iframe src="${data.points_chart_path}" width="100%" height="400px" scrolling="no"></iframe>
                     </div>
-                    <h3>Word Cloud</h3>
-                    <img src="${data.word_cloud_path}" alt="Word Cloud">
                 `;
-                
-                // Force refresh of the word cloud image
-                const wordCloudImg = resultsDiv.querySelector('img[alt="Word Cloud"]');
-                wordCloudImg.onload = () => {
-                    wordCloudImg.style.opacity = '1';
-                };
-                wordCloudImg.style.opacity = '0';
-                wordCloudImg.src = data.word_cloud_path + '?t=' + new Date().getTime();
             }
         })
         .catch(error => {
