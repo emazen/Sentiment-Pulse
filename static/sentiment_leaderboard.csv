@@ -1,11 +1,15 @@
 name,sentiment_score,sentiment_label,ppg,rpg,apg,image_url,correlation
+Alperen Sengun,0.1291504957431442,Positive,21.1,9.3,5.0,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630578.png,0.0002708229345352
 Tyrese Maxey,0.1253634722587386,Positive,25.9,3.7,6.2,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630178.png,-0.017105578369042
 Stephen Curry,0.1247565950239037,Positive,26.4,4.5,5.1,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/201939.png,0.0983082302805616
-Nikola Jokic,0.10534545397943157,Positive,26.4,12.4,9.0,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/203999.png,0.05953421840234356
+Austin Reaves,0.10830211575202485,Positive,15.9,4.3,5.5,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630559.png,0.14805447001261926
+Nikola Jokic,0.1053454539794315,Positive,26.4,12.4,9.0,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/203999.png,0.0595342184023435
 Aaron Gordon,0.1029394938957129,Positive,13.9,6.5,3.5,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/203932.png,-0.0409398492081491
 Victor Wembanyama,0.0978044485357605,Positive,21.4,10.6,3.9,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1641705.png,0.0747438638743249
 Jrue Holiday,0.0964086755983192,Positive,12.5,5.4,4.8,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/201950.png,-0.2549720847609704
-LeBron James,0.083452222199538,Positive,25.7,7.3,8.3,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/2544.png,0.2218820862366135
+LeBron James,0.0834522223930596,Positive,25.7,7.3,8.3,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/2544.png,0.2218820895816025
+Tyler Herro,0.0748308795397128,Positive,20.8,5.3,4.5,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1629639.png,-0.0425609189227966
+Cade Cunningham,0.0700468410584099,Positive,22.7,4.3,7.5,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630595.png,0.1092282013390568
 Luka Doncic,0.0654439696313246,Positive,33.9,9.2,9.8,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1629029.png,-0.0295609968923834
 De'aaron Fox,0.054197261965758,Positive,26.6,4.6,5.6,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1628368.png,0.0670850945400175
 Domantas Sabonis,0.0449433770432805,Positive,19.4,13.7,8.2,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1627734.png,0.0348630439307673
