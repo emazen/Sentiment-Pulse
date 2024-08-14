@@ -2,13 +2,20 @@ from flask import Flask, render_template, request, jsonify
 from utils.reddit_scraper import get_reddit_data
 from utils.sentiment_analyzer import analyze_sentiment
 from utils.data_visualizer import create_sentiment_chart, create_points_chart
-from utils.nba_stats import get_player_info
+from utils.nba_stats import get_player_info, get_all_players
 from datetime import datetime
 import pandas as pd
 import os
 import numpy as np
 
 app = Flask(__name__)
+
+@app.route('/player-names', methods=['GET'])
+def player_names():
+    query = request.args.get('q', '').lower()
+    all_players = get_all_players()
+    matching_players = [player for player in all_players if query in player.lower()]
+    return jsonify(matching_players[:10])  # Limit to 10 suggestions
 
 def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation, season):
     csv_path = "static/sentiment_leaderboard.csv"
