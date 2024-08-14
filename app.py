@@ -10,9 +10,13 @@ import numpy as np
 
 app = Flask(__name__)
 
-def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation):
+def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation, season):
     csv_path = "static/sentiment_leaderboard.csv"
     
+    # Only update the leaderboard if the season is 2023/2024
+    if season != "2023/2024":
+        return
+
     if os.path.exists(csv_path):
         df = pd.read_csv(csv_path)
     else:
@@ -98,7 +102,7 @@ def analyze():
         correlation = df['sentiment'].corr(df['points'])
 
         # Update the leaderboard
-        update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation)
+        update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation, season)
 
         return jsonify({
             'chart_path': chart_path,
