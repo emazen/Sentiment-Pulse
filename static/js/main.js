@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p>Points per game: ${data.player_info.ppg.toFixed(1)}</p>
                             <p>Rebounds per game: ${data.player_info.rpg.toFixed(1)}</p>
                             <p>Assists per game: ${data.player_info.apg.toFixed(1)}</p>
+                            <p>Correlation: ${data.correlation.toFixed(2)}</p>
                         </div>
                     </div>
                 `;
