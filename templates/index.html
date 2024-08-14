@@ -4,51 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Player Sentiment Analysis</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+        }
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #007bff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #splash-screen img {
+            max-width: 200px;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+        #splash-screen h1 {
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #main-content {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>NBA Player Sentiment Analysis</h1>
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/leaderboard">Leaderboard</a></li>
-                </ul>
-            </nav>
+    <div id="splash-screen">
+        <div class="image-container">
+            <img src="/static/images/basketball.png" alt="Basketball" 
+                 onerror="this.style.display='none';this.parentNode.textContent='Basketball';">
         </div>
-    </header>
-
-    <main class="container">
-        <div class="content-wrapper">
-            <section class="input-section">
-                <form id="player-form">
-                    <div class="form-group">
-                        <label for="player-name">Player Name:</label>
-                        <input type="text" id="player-name" name="player_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="season-selector">Season:</label>
-                        <select id="season-selector" name="season" required>
-                            <option value="2023/2024">2023/2024</option>
-                            <option value="2022/2023">2022/2023</option>
-                            <option value="2021/2022">2021/2022</option>
-                            <option value="2020/2021">2020/2021</option>
-                            <option value="2019/2020">2019/2020</option>
-                            <option value="2018/2019">2018/2019</option>
-                            <option value="2017/2018">2017/2018</option>
-                            <option value="2016/2017">2016/2017</option>
-                            <option value="2015/2016">2015/2016</option>
-                        </select>
-                    </div>
-                    <button type="submit">Analyze</button>
-                </form>
-            </section>
-            <section class="player-info-section"></section>
+        <h1>NBA Player Sentiment Analyzer</h1>
+        <div class="image-container">
+            <img src="/static/images/EmotionEmoji.webp" alt="Emotion Emojis" 
+                 onerror="this.style.display='none';this.parentNode.textContent='Emotion Emojis';">
         </div>
-        <div id="results"></div>
-    </main>
+    </div>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <div id="main-content">
+        <header>
+            <div class="container">
+                <h1>NBA Player Sentiment Analysis</h1>
+                <nav>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/leaderboard">Leaderboard</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container" role="main">
+            <div class="content-wrapper">
+                <section class="input-section">
+                    <form id="player-form">
+                        <div class="form-group">
+                            <label for="player-name">Player Name:</label>
+                            <input type="text" id="player-name" name="player_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="season-selector">Season:</label>
+                            <select id="season-selector" name="season" required>
+                                <option value="2023/2024">2023/2024</option>
+                                <option value="2022/2023">2022/2023</option>
+                                <option value="2021/2022">2021/2022</option>
+                                <option value="2020/2021">2020/2021</option>
+                                <option value="2019/2020">2019/2020</option>
+                                <option value="2018/2019">2018/2019</option>
+                                <option value="2017/2018">2017/2018</option>
+                                <option value="2016/2017">2016/2017</option>
+                                <option value="2015/2016">2015/2016</option>
+                            </select>
+                        </div>
+                        <button type="submit">Analyze</button>
+                    </form>
+                </section>
+                <section class="player-info-section">
+                    <!-- Player info will be dynamically inserted here -->
+                </section>
+            </div>
+            <div id="results">
+                <!-- Results will be dynamically inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 1000);
+        });
+
+        // Function to check if images have loaded
+        function checkImagesLoaded() {
+            const images = document.querySelectorAll('#splash-screen img');
+            images.forEach(img => {
+                if (!img.complete) {
+                    img.style.display = 'none';
+                    img.parentNode.textContent = img.alt;
+                }
+            });
+        }
+
+        // Check images after a short delay
+        setTimeout(checkImagesLoaded, 500);
+    </script>
 </body>
 </html>

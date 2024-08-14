@@ -6,22 +6,27 @@ from utils.nba_stats import get_player_info
 from datetime import datetime
 import pandas as pd
 import os
+import numpy as np
 
 app = Flask(__name__)
 
-def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info):
+def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation, season):
     csv_path = "static/sentiment_leaderboard.csv"
     
+    # Only update the leaderboard if the season is 2023/2024
+    if season != "2023/2024":
+        return
+
     if os.path.exists(csv_path):
         df = pd.read_csv(csv_path)
     else:
-        df = pd.DataFrame(columns=["name", "sentiment_score", "sentiment_label", "ppg", "rpg", "apg"])
+        df = pd.DataFrame(columns=["name", "sentiment_score", "sentiment_label", "ppg", "rpg", "apg", "image_url", "correlation"])
     
     # Check if player already exists in the leaderboard
     if player_name in df['name'].values:
         # Update existing player
-        df.loc[df['name'] == player_name, ['sentiment_score', 'sentiment_label', 'ppg', 'rpg', 'apg']] = [
-            overall_sentiment, sentiment_label, player_info['ppg'], player_info['rpg'], player_info['apg']
+        df.loc[df['name'] == player_name, ['sentiment_score', 'sentiment_label', 'ppg', 'rpg', 'apg', 'image_url', 'correlation']] = [
+            overall_sentiment, sentiment_label, player_info['ppg'], player_info['rpg'], player_info['apg'], player_info['image_url'], correlation
         ]
     else:
         # Add new player
@@ -31,7 +36,9 @@ def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_i
             "sentiment_label": [sentiment_label],
             "ppg": [player_info['ppg']],
             "rpg": [player_info['rpg']],
-            "apg": [player_info['apg']]
+            "apg": [player_info['apg']],
+            "image_url": [player_info['image_url']],
+            "correlation": [correlation]
         })
         df = pd.concat([df, new_row], ignore_index=True)
     
@@ -72,15 +79,38 @@ def analyze():
         # Create points chart using the game_data from player_info
         points_chart_path = create_points_chart(player_info['game_data'])
 
+        # Calculate correlation
+        sentiment_dates = [date for date, _, _, _ in sentiment_data]
+        sentiment_scores = [sentiment for _, sentiment, _, _ in sentiment_data]
+        game_dates = [datetime.fromisoformat(date) for date, _ in player_info['game_data']]
+        game_points = [points for _, points in player_info['game_data']]
+
+        # Create a DataFrame with all dates
+        all_dates = sorted(set(sentiment_dates + game_dates))
+        df = pd.DataFrame(index=all_dates, columns=['sentiment', 'points'])
+
+        # Fill in sentiment scores and points
+        for date, sentiment in zip(sentiment_dates, sentiment_scores):
+            df.loc[date, 'sentiment'] = sentiment
+        for date, points in zip(game_dates, game_points):
+            df.loc[date, 'points'] = points
+
+        # Forward fill missing values
+        df = df.ffill()
+
+        # Calculate correlation
+        correlation = df['sentiment'].corr(df['points'])
+
         # Update the leaderboard
-        update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info)
+        update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info, correlation, season)
 
         return jsonify({
             'chart_path': chart_path,
             'points_chart_path': points_chart_path,
             'player_info': player_info,
             'overall_sentiment': round(overall_sentiment, 2),
-            'sentiment_label': sentiment_label
+            'sentiment_label': sentiment_label,
+            'correlation': round(correlation, 2)
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -97,39 +127,6 @@ def leaderboard():
         return render_template('leaderboard.html', leaderboard_data=leaderboard_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
-def update_leaderboard(player_name, overall_sentiment, sentiment_label, player_info):
-    csv_path = "static/sentiment_leaderboard.csv"
-    
-    if os.path.exists(csv_path):
-        df = pd.read_csv(csv_path)
-    else:
-        df = pd.DataFrame(columns=["name", "sentiment_score", "sentiment_label", "ppg", "rpg", "apg", "image_url"])
-    
-    # Check if player already exists in the leaderboard
-    if player_name in df['name'].values:
-        # Update existing player
-        df.loc[df['name'] == player_name, ['sentiment_score', 'sentiment_label', 'ppg', 'rpg', 'apg', 'image_url']] = [
-            overall_sentiment, sentiment_label, player_info['ppg'], player_info['rpg'], player_info['apg'], player_info['image_url']
-        ]
-    else:
-        # Add new player
-        new_row = pd.DataFrame({
-            "name": [player_name],
-            "sentiment_score": [overall_sentiment],
-            "sentiment_label": [sentiment_label],
-            "ppg": [player_info['ppg']],
-            "rpg": [player_info['rpg']],
-            "apg": [player_info['apg']],
-            "image_url": [player_info['image_url']]
-        })
-        df = pd.concat([df, new_row], ignore_index=True)
-    
-    # Sort the dataframe by sentiment_score in descending order
-    df = df.sort_values("sentiment_score", ascending=False).reset_index(drop=True)
-    
-    # Save the updated dataframe
-    df.to_csv(csv_path, index=False)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)

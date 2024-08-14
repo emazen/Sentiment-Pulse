@@ -18,7 +18,6 @@
             </nav>
         </div>
     </header>
-
     <main class="container">
         <h2>Sentiment Leaderboard (2023/2024 Season)</h2>
         {% if message %}
@@ -33,26 +32,27 @@
                     <div class="cell">PPG</div>
                     <div class="cell">RPG</div>
                     <div class="cell">APG</div>
+                    <div class="cell">Correlation</div>
                 </div>
                 {% for player in leaderboard_data %}
-                <div class="leaderboard-row">
-                    <div class="cell">{{ loop.index }}</div>
-                    <div class="cell">
-                        <img src="{{ player.image_url }}" alt="{{ player.name }}" class="player-image {{ 'positive-sentiment' if player.sentiment_score > 0 else 'negative-sentiment' }}">
+                    <div class="leaderboard-row">
+                        <div class="cell">{{ loop.index }}</div>
+                        <div class="cell">
+                            <img src="{{ player.image_url }}" alt="{{ player.name }}" class="player-image {{ 'positive-sentiment' if player.sentiment_score > 0 else 'negative-sentiment' }}">
+                        </div>
+                        <div class="cell">{{ player.name }}</div>
+                        <div class="cell">{{ player.sentiment_score | round(2) }}</div>
+                        <div class="cell">{{ player.ppg }}</div>
+                        <div class="cell">{{ player.rpg }}</div>
+                        <div class="cell">{{ player.apg }}</div>
+                        <div class="cell">{{ player.correlation | round(2) }}</div>
                     </div>
-                    <div class="cell">{{ player.name }}</div>
-                    <div class="cell">{{ player.sentiment_score | round(2) }}</div>
-                    <div class="cell">{{ player.ppg }}</div>
-                    <div class="cell">{{ player.rpg }}</div>
-                    <div class="cell">{{ player.apg }}</div>
-                </div>
                 {% endfor %}
             </div>
         {% else %}
             <p class="message">No data available. Please try again later.</p>
         {% endif %}
     </main>
-
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

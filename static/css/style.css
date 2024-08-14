@@ -68,20 +68,38 @@ main.container {
   gap: 20px;
 }
 
-.player-info img {
+.player-image-container {
+  position: relative;
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid transparent;
+  overflow: hidden;
 }
 
-.player-info img.positive-sentiment {
+.player-image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 4px solid transparent;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.player-image-container.positive-sentiment::before {
   border-color: #28a745;
 }
 
-.player-info img.negative-sentiment {
+.player-image-container.negative-sentiment::before {
   border-color: #dc3545;
+}
+
+.player-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .player-stats {
@@ -308,4 +326,31 @@ nav ul li a:hover {
 
 .sentiment-score {
   margin-right: 0.5em; 
+}
+
+/* Loading animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+button.loading {
+    position: relative;
+    color: transparent;
+}
+
+button.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid #ffffff;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
