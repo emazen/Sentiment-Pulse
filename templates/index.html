@@ -4,65 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Player Sentiment Analysis</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-        }
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #007bff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        #splash-screen img {
-            max-width: 200px;
-            margin-bottom: 20px;
-            object-fit: contain;
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-        }
-        #splash-screen h1 {
-            color: white;
-            font-size: 24px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: transparent;
-            border: none;
-            padding: 0;
-        }
-        #main-content {
-            display: none;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
     <div id="splash-screen">
         <div class="image-container">
-            <img src="/static/images/basketball.png" alt="Basketball" 
-                 onerror="this.style.display='none';this.parentNode.textContent='Basketball';">
+            <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball" onerror="this.style.display='none';this.parentNode.textContent='Basketball';">
         </div>
         <h1>NBA Player Sentiment Analyzer</h1>
-        <div class="image-container">
-            <img src="/static/images/EmotionEmoji.webp" alt="Emotion Emojis" 
-                 onerror="this.style.display='none';this.parentNode.textContent='Emotion Emojis';">
+        <div class="image-container emoji-container">
+            <img src="{{ url_for('static', filename='images/EmotionEmoji.webp') }}" alt="Emotion Emojis" onerror="this.style.display='none';this.parentNode.textContent='Emotion Emojis';">
         </div>
     </div>
 
@@ -79,7 +33,7 @@
             </div>
         </header>
 
-        <main class="container" role="main">
+        <main class="container">
             <div class="content-wrapper">
                 <section class="input-section">
                     <form id="player-form">
@@ -89,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <label for="season-selector">Season:</label>
-                            <select id="season-selector" name="season" required>
+                            <select id="season-selector" name="season">
                                 <option value="2023/2024">2023/2024</option>
                                 <option value="2022/2023">2022/2023</option>
                                 <option value="2021/2022">2021/2022</option>
@@ -104,65 +58,39 @@
                         <button type="submit">Analyze</button>
                     </form>
                 </section>
+
                 <section class="player-info-section">
                     <!-- Player info will be dynamically inserted here -->
                 </section>
             </div>
+
             <div id="results">
-                <!-- Results will be dynamically inserted here -->
+                <!-- Analysis results will be dynamically inserted here -->
             </div>
         </main>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="/static/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        function checkSplashScreen() {
-            if (!localStorage.getItem('splashScreenSeen')) {
-                document.getElementById('splash-screen').style.display = 'flex';
-                document.getElementById('main-content').style.display = 'none';
-                
+        document.addEventListener('DOMContentLoaded', function() {
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+
+            if (!sessionStorage.getItem('splashShown')) {
+                splashScreen.style.display = 'flex';
+                mainContent.style.display = 'none';
                 setTimeout(function() {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('main-content').style.display = 'block';
-                    localStorage.setItem('splashScreenSeen', 'true');
-                }, 3000);  // 3000 milliseconds (3 seconds)
+                    splashScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        splashScreen.style.display = 'none';
+                        mainContent.style.display = 'block';
+                    }, 500);
+                }, 2000);
+                sessionStorage.setItem('splashShown', 'true');
             } else {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
+                splashScreen.style.display = 'none';
+                mainContent.style.display = 'block';
             }
-        }
-
-        window.addEventListener('load', checkSplashScreen);
-
-        // Function to check if images have loaded
-        function checkImagesLoaded() {
-            const images = document.querySelectorAll('#splash-screen img');
-            images.forEach(img => {
-                if (!img.complete) {
-                    img.style.display = 'none';
-                    img.parentNode.textContent = img.alt;
-                }
-            });
-        }
-
-        // Check images after a short delay
-        setTimeout(checkImagesLoaded, 500);
-
-        // Autocomplete for player names
-        $(document).ready(function() {
-            $("#player-name").autocomplete({
-                source: function(request, response) {
-                    $.getJSON("/player-names", { q: request.term }, function(data) {
-                        response(data);
-                    });
-                },
-                minLength: 2,
-                select: function(event, ui) {
-                    $("#player-name").val(ui.item.value);
-                }
-            });
         });
     </script>
 </body>

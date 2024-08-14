@@ -109,9 +109,6 @@ def create_points_chart(game_data):
     ''')
     plugins.connect(fig, tooltip)
     
-    # Add legend
-    ax.legend()
-    
     # Save the plot as HTML
     chart_path = 'static/images/points_chart.html'
     html = mpld3.fig_to_html(fig)

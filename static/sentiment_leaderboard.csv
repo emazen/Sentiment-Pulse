@@ -2,6 +2,7 @@ name,sentiment_score,sentiment_label,ppg,rpg,apg,image_url,correlation
 Alperen Sengun,0.1291504957431442,Positive,21.1,9.3,5.0,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630578.png,0.0002708229345352
 Tyrese Maxey,0.1253634722587386,Positive,25.9,3.7,6.2,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630178.png,-0.017105578369042
 Stephen Curry,0.1247565950239037,Positive,26.4,4.5,5.1,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/201939.png,0.0983082302805616
+Jaden McDaniels,0.1121817502853834,Positive,10.5,3.1,1.4,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630183.png,-0.0136975813167323
 Austin Reaves,0.1083021157520248,Positive,15.9,4.3,5.5,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/1630559.png,0.1480544700126192
 Nikola Jokic,0.1053454539794315,Positive,26.4,12.4,9.0,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/203999.png,0.0595342184023435
 Aaron Gordon,0.1029394938957129,Positive,13.9,6.5,3.5,https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/203932.png,-0.0409398492081491
