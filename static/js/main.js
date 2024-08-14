@@ -42,19 +42,19 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 const sentimentClass = data.overall_sentiment > 0 ? 'positive-sentiment' : 'negative-sentiment';
                 playerInfoSection.innerHTML = `
-                    <h2>${data.player_info.name} stats for ${season} season</h2>
-                    <div class="player-info">
-                        <div class="player-image-container ${sentimentClass}">
-                            <img src="${data.player_info.image_url}" alt="${data.player_info.name}" class="player-image">
-                        </div>
-                        <div class="player-stats">
-                            <p>Points per game: ${data.player_info.ppg.toFixed(1)}</p>
-                            <p>Rebounds per game: ${data.player_info.rpg.toFixed(1)}</p>
-                            <p>Assists per game: ${data.player_info.apg.toFixed(1)}</p>
-                            <p>Correlation: ${data.correlation.toFixed(2)}</p>
-                        </div>
+                <h2>${data.player_info.name} stats for ${season} season</h2>
+                <div class="player-info">
+                    <div class="player-image-container ${data.overall_sentiment > 0 ? 'positive-sentiment' : 'negative-sentiment'}">
+                        <img src="${data.player_info.image_url}" alt="${data.player_info.name}" class="player-image">
                     </div>
-                `;
+                    <div class="player-stats">
+                        <p>Points per game: ${data.player_info.ppg.toFixed(1)}</p>
+                        <p>Rebounds per game: ${data.player_info.rpg.toFixed(1)}</p>
+                        <p>Assists per game: ${data.player_info.apg.toFixed(1)}</p>
+                        <p>Correlation: ${data.correlation.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
                 playerInfoSection.style.display = 'block';
 
                 resultsDiv.innerHTML = `
