@@ -30,6 +30,9 @@
             max-width: 200px;
             margin-bottom: 20px;
             object-fit: contain;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
         }
         #splash-screen h1 {
             color: white;
@@ -41,6 +44,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: transparent;
+            border: none;
+            padding: 0;
         }
         #main-content {
             display: none;
@@ -112,12 +118,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="/static/js/main.js"></script>
     <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
+        function checkSplashScreen() {
+            if (!localStorage.getItem('splashScreenSeen')) {
+                document.getElementById('splash-screen').style.display = 'flex';
+                document.getElementById('main-content').style.display = 'none';
+                
+                setTimeout(function() {
+                    document.getElementById('splash-screen').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    localStorage.setItem('splashScreenSeen', 'true');
+                }, 3000);  // Changed to 3000 milliseconds (3 seconds)
+            } else {
                 document.getElementById('splash-screen').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-            }, 1000);
-        });
+            }
+        }
+
+        window.addEventListener('load', checkSplashScreen);
 
         // Function to check if images have loaded
         function checkImagesLoaded() {
