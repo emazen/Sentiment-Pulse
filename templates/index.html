@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Player Sentiment Analysis</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <style>
         body, html {
             margin: 0;
@@ -107,6 +108,8 @@
         </main>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="/static/js/main.js"></script>
     <script>
         window.addEventListener('load', function() {
@@ -129,6 +132,21 @@
 
         // Check images after a short delay
         setTimeout(checkImagesLoaded, 500);
+
+        // Autocomplete for player names
+        $(document).ready(function() {
+            $("#player-name").autocomplete({
+                source: function(request, response) {
+                    $.getJSON("/player-names", { q: request.term }, function(data) {
+                        response(data);
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                    $("#player-name").val(ui.item.value);
+                }
+            });
+        });
     </script>
 </body>
 </html>

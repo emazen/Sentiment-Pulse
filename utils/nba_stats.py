@@ -52,3 +52,6 @@ def get_player_info(player_name, season):
         'apg': round(apg, 1),
         'game_data': [(date.isoformat(), float(points)) for date, points in sorted(game_data)]
     }
+
+def get_all_players():
+    return [player['full_name'] for player in players.get_players()]
