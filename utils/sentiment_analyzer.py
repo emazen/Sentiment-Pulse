@@ -25,7 +25,7 @@ def analyze_sentiment(reddit_data):
     sentiment_data = []
     total_sentiment = 0
 
-    texts = [post['title'] for post in reddit_data]  # Analyze only titles for speed
+    texts = [post['title'] for post in reddit_data]  # Analyzing only the titles for speed
     sentiments = process_in_batches(texts)
 
     for post, sentiment in zip(reddit_data, sentiments):
