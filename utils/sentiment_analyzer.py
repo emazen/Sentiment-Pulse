@@ -12,14 +12,6 @@ model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 
-@lru_cache(maxsize=1000)
-def get_sentiment(text):
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
-    inputs = {k: v.to(device) for k, v in inputs.items()}
-    with torch.no_grad():
-        outputs = model(**inputs)
-    scores = torch.softmax(outputs.logits, dim=1).cpu().numpy()[0]
-    return scores[2] - scores[0]  # Positive score - Negative score
 
 def analyze_sentiment(reddit_data):
     sentiment_data = []

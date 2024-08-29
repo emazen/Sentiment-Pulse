@@ -42,19 +42,19 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 const sentimentClass = data.overall_sentiment > 0 ? 'positive-sentiment' : 'negative-sentiment';
                 playerInfoSection.innerHTML = `
-                <h2>${data.player_info.name} stats for ${season} season</h2>
-                <div class="player-info">
-                    <div class="player-image-container ${data.overall_sentiment > 0 ? 'positive-sentiment' : 'negative-sentiment'}">
-                        <img src="${data.player_info.image_url}" alt="${data.player_info.name}" class="player-image">
+                    <h2>${data.player_info.name} stats for ${season} season</h2>
+                    <div class="player-info">
+                        <div class="player-image-container ${sentimentClass}">
+                            <img src="${data.player_info.image_url}" alt="${data.player_info.name}" class="player-image">
+                        </div>
+                        <div class="player-stats">
+                            <p>Points per game: ${data.player_info.ppg.toFixed(1)}</p>
+                            <p>Rebounds per game: ${data.player_info.rpg.toFixed(1)}</p>
+                            <p>Assists per game: ${data.player_info.apg.toFixed(1)}</p>
+                            <p>Correlation: <span class="correlation-score" title="The correlation score measures the relationship between the player's sentiment trends and their on-court performance (points per game). A score closer to 1 indicates a stronger positive correlation, while a score closer to -1 indicates a stronger negative correlation. A score near 0 suggests little to no correlation.">${data.correlation.toFixed(2)}</span></p>
+                        </div>
                     </div>
-                    <div class="player-stats">
-                        <p>Points per game: ${data.player_info.ppg.toFixed(1)}</p>
-                        <p>Rebounds per game: ${data.player_info.rpg.toFixed(1)}</p>
-                        <p>Assists per game: ${data.player_info.apg.toFixed(1)}</p>
-                        <p>Correlation: ${data.correlation.toFixed(2)}</p>
-                    </div>
-                </div>
-            `;
+                `;
                 playerInfoSection.style.display = 'block';
 
                 resultsDiv.innerHTML = `
@@ -69,6 +69,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         <iframe src="${data.points_chart_path}" width="100%" height="400px" scrolling="no"></iframe>
                     </div>
                 `;
+
+                // Initialize tooltip for correlation score
+                $('.correlation-score').tooltip({
+                    position: {
+                        my: "center bottom-20",
+                        at: "center top",
+                        using: function(position, feedback) {
+                            $(this).css(position);
+                            $("<div>")
+                                .addClass("arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                        }
+                    }
+                });
             }
         })
         .catch(error => {
